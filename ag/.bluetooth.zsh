@@ -92,7 +92,7 @@ function bluetooth() {
 	#
 	local function print_success_title() {
 		print_empty_line
-		echo "$(tput setaf 2)🚀 SUCCESS$(tput sgr0)"
+		echo "$(tput setaf 2)SUCCESS$(tput sgr0)"
 		print_underline
 	}
 
@@ -282,7 +282,7 @@ function bluetooth() {
 	#   Prints the message indicating that Bluetooth is turned on
 	#
 	local function print_bluetooth_is_turned_on() {
-		echo "⚡️ Bluetooth is turned ON."
+		echo "Bluetooth is turned ON."
 		print_empty_line
 	}
 
@@ -294,7 +294,7 @@ function bluetooth() {
 	# 	Prints a message indicating that Bluetooth is turned off.
 	#
 	local function print_bluetooth_is_turned_off() {
-		echo "💤 Bluetooth is turned OFF."
+		echo "Bluetooth is turned OFF."
 		print_empty_line
 	}
 
@@ -309,7 +309,7 @@ function bluetooth() {
 	#
 	local function print_bluetooth_state_error() {
 		print_error_title
-		echo "⁉️  Unknown state"
+		echo "Unknown state"
 		print_empty_line
 	}
 
@@ -350,8 +350,6 @@ function bluetooth() {
 		echo "Or:"
 		print_empty_line
 		echo "$(tput setaf 3)\tblue list connected$(tput sgr0)"
-		print_empty_line
-		echo "Cheers, mate. 🍺"
 		print_empty_line
 	}
 
@@ -485,17 +483,17 @@ function bluetooth() {
 		case $device_status in
 			0)
 				print_empty_line
-				echo "💤 Device (${mac_address}) is DISCONNECTED."
+				echo "Device (${mac_address}) is DISCONNECTED."
 				print_empty_line
 				;;
 			1)
 				print_empty_line
-				echo "⚡️ Device (${mac_address}) is CONNECTED."
+				echo "Device (${mac_address}) is CONNECTED."
 				print_empty_line
 				;;
 			*)
 				print_error_title
-				echo "⁉️  Unknown state of this device."
+				echo "Unknown state of this device."
 				print_empty_line
 				;;
 		esac
@@ -617,7 +615,7 @@ function bluetooth() {
 
 		local function __connect_device_by_mac_address() {
 			print_empty_line
-			echo "⏱️  Trying to connect... Just wait a moment."
+			echo "Trying to connect... Just wait a moment."
 			print_empty_line
 			blueutil --connect $1
 			local new_device_status=$(blueutil --is-connected $mac_address)
@@ -625,7 +623,7 @@ function bluetooth() {
 				print_empty_line
 			else
 				print_success_title
-				echo "⚡️ Device (${1}) is CONNECTED."
+				echo "Device (${1}) is CONNECTED."
 				print_empty_line
 			fi
 		}
@@ -636,12 +634,12 @@ function bluetooth() {
 				;;
 			1)
 				print_empty_line
-				echo "👍 Device (${mac_address}) is ALREADY CONNECTED."
+				echo "Device (${mac_address}) is ALREADY CONNECTED."
 				print_empty_line
 				;;
 			*)
 				print_empty_line
-				echo "⁉️  Unknown state of this device."
+				echo "Unknown state of this device."
 				echo "But anyway I gonna try to connect..."
 				print_empty_line
 				__connect_device_by_mac_address $mac_address
@@ -665,7 +663,7 @@ function bluetooth() {
 
 		local function __disconnect_device_by_mac_address() {
 			print_empty_line
-			echo "⏱️  Trying to disconnect... Just wait a moment."
+			echo "Trying to disconnect... Just wait a moment."
 			print_empty_line
 			blueutil --disconnect $1
 			local new_device_status=$(blueutil --is-connected $1)
@@ -673,7 +671,7 @@ function bluetooth() {
 				print_empty_line
 			else
 				print_success_title
-				echo "💤 Device (${1}) is DISCONNECTED."
+				echo "Device (${1}) is DISCONNECTED."
 				print_empty_line
 			fi
 		}
@@ -681,7 +679,7 @@ function bluetooth() {
 		case $device_status in
 			0)
 				print_empty_line
-				echo "👍 Device (${mac_address}) is ALREADY DISCONNECTED."
+				echo "Device (${mac_address}) is ALREADY DISCONNECTED."
 				print_empty_line
 				;;
 			1)
@@ -689,7 +687,7 @@ function bluetooth() {
 				;;
 			*)
 				print_empty_line
-				echo "⁉️  Unknown state of this device."
+				echo "Unknown state of this device."
 				echo "But anyway I gonna try to disconnect..."
 				print_empty_line
 				__disconnect_device_by_mac_address $mac_address
@@ -852,7 +850,7 @@ function bluetooth() {
 			local forgetting_result=$(blueutil --unpair $1)
 			if [[ -z "$forgetting_result" ]]; then
 				print_empty_line
-				echo "👋 Device (${1}) is forgotten."
+				echo "Device (${1}) is forgotten."
 				print_empty_line
 			else
 				print_empty_line
@@ -861,7 +859,7 @@ function bluetooth() {
 			local forgetting_result=$(blueutil --unpair $saved_mac_address)
 			if [[ -z "$forgetting_result" ]]; then
 				print_empty_line
-				echo "👋 Device (${saved_mac_address}) is forgotten."
+				echo "Device (${saved_mac_address}) is forgotten."
 				print_empty_line
 			else
 				print_empty_line
