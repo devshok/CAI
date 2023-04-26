@@ -1,4 +1,3 @@
-alias gc="git checkout"
 alias go="git checkout"
 alias gb="git branch"
 alias gba="git branch --all"
@@ -10,3 +9,5 @@ alias gc="git commit"
 alias gcm="git commit -m"
 alias ga="git add"
 alias gu="git restore --staged" # gu = git undo
+alias gpo="git push origin"
+alias gp="git pull"
