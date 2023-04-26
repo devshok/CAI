@@ -11,3 +11,4 @@ alias ga="git add"
 alias gu="git restore --staged" # gu = git undo
 alias gpo="git push origin"
 alias gp="git pull"
+alias gd="git diff"
