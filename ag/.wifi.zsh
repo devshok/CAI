@@ -23,6 +23,7 @@ function wf() {
 # disconnect: Disconnect from a specific Wi-Fi network.
 # save: Save a Wi-Fi network to the favorite list
 # delete: Remove a Wi-Fi network from the favorite list
+# list: List your favorite Wi-Fi networks
 # help: Show a help message
 #
 # Each option may require an additional argument to be passed.
@@ -38,6 +39,80 @@ function wifi() {
 
 	# Full path to the Bluetooth devices configuration file
 	local CONFIG_FILE_PATH="${CAI_PATH}/${CONFIG_FILE}"
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name:
+	# 	print_underline
+	#
+	# Description:
+	# 	This function prints an underline to separate sections of the output.
+	#
+	local function print_underline() {
+		echo "--------------------------------------------"
+	}
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name:
+	# 	print_empty_line
+	#
+	# Description:
+	# 	Prints an empty line to the console.
+	#	This function can be used to add spacing between lines of output or to
+	#	break up sections of text in the console.
+	#
+	local function print_empty_line() {
+		echo ""
+	}
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function Name: 
+	# 	print_error_title
+	#
+	# Description: 
+	# 	Prints an error message with a title and underline to the console using ANSI color codes.
+	#
+	local function print_error_title() {
+		print_empty_line
+		echo "$(tput setaf 1)ERROR$(tput sgr0)"
+		print_underline
+	}
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name: 
+	# 	print_success_title
+	#
+	# Description:
+	# 	Prints a success message to the terminal using green text and an underline.
+	#
+	# Notes:
+	#   - Uses the `tput` command to set the terminal text color and formatting.
+	#   - Calls the `print_empty_line` and `print_underline` functions to add visual
+	#     separation before and after the message.
+	#
+	local function print_success_title() {
+		print_empty_line
+		echo "$(tput setaf 2)SUCCESS$(tput sgr0)"
+		print_underline
+	}
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name:
+	# 	print_instructions_to_add_new_fave_network
+	#
+	# Description:
+	#   This function is intended to provide a helpful message to users who want
+	# 	to add a new favorite network to the list of known Wi-Fi networks.
+	#
+	local function print_instructions_to_add_new_fave_network() {
+		echo "Need to add any network? Simply use that:"
+		print_empty_line
+		echo "$(tput setaf 3)\twifi save <Alias name> <Wi-Fi network name> <password>$(tput sgr0)"
+		print_empty_line
+		echo "For example:"
+		print_empty_line
+		echo "$(tput setaf 3)\twifi save home 'My\ Home\ Wi-Fi' password1234Hh$(tput sgr0)"
+		print_empty_line
+	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 	# Function name:
@@ -144,11 +219,7 @@ function wifi() {
 	#   - It uses the 'airport' utility to scan for Wi-Fi networks and formats the output using awk and column.
 	#
 	local function get_wifi_list() {
-		/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s \
-  			| awk 'NR==1 { printf "%-33s %-5s %s\n", $1, $2, $NF; next } \
-         		{ printf "%-33s %-5s %s\n", substr($0,1,33), substr($0,34,5), $NF }' \
-  			| tail -n +2 \
-  			| column -t -s $'\t'
+		/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -244,15 +315,107 @@ function wifi() {
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 	# Function name:
+	# 	print_fave_list
+	#
+	# Description:
+	# 	This function retrieves the list of favorite Wi-Fi networks stored in the configuration file.
+	# 	It then prints the list along with the the Wi-Fi network and its password.
+	#
+	# Notes:
+	#   - The configuration of the favorite list is intended to be stored at '~/.cai/' path.
+	#
+
+	local function print_fave_list() {
+		source "$CONFIG_FILE_PATH"
+		local i=1
+		print_empty_line
+		echo "Your favorite list"
+		print_underline
+		if [[ ${#WIFI_NETWORKS[@]} -eq 0 ]]; then
+			echo "Empty."
+		else
+			for alias_name network_info in ${(kv)WIFI_NETWORKS}; do
+				IFS="," read -r network password <<< "$network_info"
+				password=$(echo $password | tr -d ' ')
+				echo "${i}. ${alias_name}"
+				print_empty_line
+				echo "Wi-Fi network:\t${network}"
+				echo "Password:\t${password}"
+				print_underline
+				((i++))
+			done
+		fi
+		print_empty_line
+		if [[ ${#WIFI_NETWORKS[@]} -eq 0 ]]; then
+			print_instructions_to_add_new_fave_network
+		fi
+	}
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name:
+	# 	print_updated_fave_list
+	#
+	# Description:
+	# 	This function retrieves the updated list of favorite Wi-Fi networks stored in the configuration file.
+	# 	It then prints the updated list along with the Wi-Fi network and its password.
+	#
+	# Notes:
+	#   - The configuration of the favorite list is intended to be stored at '~/.cai/' path.
+	#
+	local function print_updated_fave_list() {
+		source "$CONFIG_FILE_PATH"
+		local i=1
+		print_empty_line
+		echo "Your new favorite list"
+		print_underline
+		if [[ ${#WIFI_NETWORKS[@]} -eq 0 ]]; then
+			echo "Empty."
+		else
+			for alias_name network_info in ${(kv)WIFI_NETWORKS}; do
+				IFS="," read -r network password <<< "$network_info"
+				password=$(echo $password | tr -d ' ')
+				echo "${i}. ${alias_name}"
+				print_empty_line
+				echo "Wi-Fi network:\t${network}"
+				echo "Password:\t${password}"
+				print_underline
+				((i++))
+			done
+		fi
+		print_empty_line
+		if [[ ${#WIFI_NETWORKS[@]} -eq 0 ]]; then
+			print_instructions_to_add_new_fave_network
+		fi
+	}
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name:
 	# 	save_network
 	#
 	# Description:
 	# 	This function saves a new Wi-Fi network in the favorite list.
 	#
+	# Arguments:
+	# 	- $1: A Symbolic name of the device provided by the user.
+	# 	- $2: A name of a Wi-Fi network that user wants to save.
+	# 	- $3: A password of a Wi-Fi network that user wants to save.
+	#
 	# Notes:
 	#   - It uses the '.wifi_networks.config' configuration that will store your favorite list.
 	#
-	function save_network() {}
+	function save_network() {
+		source "$CONFIG_FILE_PATH"
+		local alias_name=$1
+		local network=$2
+		local password=$3
+		WIFI_NETWORKS[$alias_name]="${network}, ${password}"
+		echo "declare -A WIFI_NETWORKS=(" > "$CONFIG_FILE_PATH"
+		for alias_name wifi_info in ${(kv)WIFI_NETWORKS}; do
+			echo "\t[${alias_name}]='${wifi_info}'" >> "$CONFIG_FILE_PATH"
+		done
+		echo ")" >> "$CONFIG_FILE_PATH"
+		print_updated_fave_list
+	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 	# Function name:
@@ -264,7 +427,26 @@ function wifi() {
 	# Notes:
 	#   - It uses the '.wifi_networks.config' configuration that stores your favorite Wi-Fi network.
 	#
-	function delete_network() {}
+	function delete_network() {
+		source "$CONFIG_FILE_PATH"
+		local query_alias_name=$1
+		local -A new_list
+		for alias_name wifi_info in ${(kv)WIFI_NETWORKS}; do
+			if [[ "$query_alias_name" != "$alias_name" ]]; then
+				new_list[$alias_name]=$wifi_info
+			fi
+		done
+		if [[ ${#new_list[@]} -eq 0 ]]; then
+			echo "declare -A WIFI_NETWORKS" > "$CONFIG_FILE_PATH"
+		else
+			echo "declare -A WIFI_NETWORKS=(" > "$CONFIG_FILE_PATH"
+			for new_alias_name new_wifi_info in ${(kv)new_list}; do
+				echo "\t[${new_alias_name}]='${new_wifi_info}'" >> "$CONFIG_FILE_PATH"
+			done
+			echo ")" >> "$CONFIG_FILE_PATH"
+		fi
+		print_updated_fave_list
+	}
 
 	# MAIN PART OF THE SCRIPT:
 
@@ -321,15 +503,25 @@ function wifi() {
 			check_connection
 			;;
 		"save")
-			if [[ $# -eq 3 ]]; then
-				save_network
+			if [[ $# -eq 4 ]]; then
+				local alias_name=$2
+				local network_name=$3
+				local network_password=$4
+				save_network $alias_name $network_name $network_password
 			else
 				print_bad_wifi_syntax
 			fi
 			;;
 		"delete")
-			if [[ $# -eq 3 ]]; then
-				delete_network
+			if [[ $# -eq 2 ]]; then
+				delete_network $2
+			else
+				print_bad_wifi_syntax
+			fi
+			;;
+		"list")
+			if [[ $# -eq 2 && "$2" == "fave" ]]; then
+				print_fave_list
 			else
 				print_bad_wifi_syntax
 			fi
