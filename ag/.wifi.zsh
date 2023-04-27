@@ -10,7 +10,34 @@ function wf() {
 	wifi "$@"
 }
 
+# The wifi() function provides a set of subcommands to manage Wi-Fi Interface on macOS.
+# It takes one option at a time and performs the appropriate action based on the option selected. 
+#
+# The available options are as follows:
+#
+# on: Turn on Wi-Fi interface
+# off: Turn off Wi-Fi interface
+# scan: Scan Wi-Fi network around the machine.
+# status: Show the status of Wi-Fi interface.
+# connect: Connect to a specific Wi-Fi network.
+# disconnect: Disconnect from a specific Wi-Fi network.
+# save: Save a Wi-Fi network to the favorite list
+# delete: Remove a Wi-Fi network from the favorite list
+# help: Show a help message
+#
+# Each option may require an additional argument to be passed.
+# If the arguments are not passed correctly, an error message will be displayed.
+
 function wifi() {
+
+	# Path to the directory containing CAI scripts and configuration files
+	local CAI_PATH="${HOME}/.cai"
+
+	# Name of the configuration file for Wi-Fi networks
+	local CONFIG_FILE=".wifi_networks.config"
+
+	# Full path to the Bluetooth devices configuration file
+	local CONFIG_FILE_PATH="${CAI_PATH}/${CONFIG_FILE}"
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 	# Function name:
@@ -126,23 +153,7 @@ function wifi() {
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 	# Function name:
-	# 	get_wifi_router_ip
-	#
-	# Description:
-	# 	This function retrieves the IP address of the Wi-Fi router to which the machine is connected.
-	#
-	# Notes:
-	#   - It uses the 'route' command to get the default gateway and extracts the router's IP address from the output.
-	#
-	local function get_wifi_router_ip() {
-		local output=$(route -n get default | grep gateway)
-		local router_ip=$(echo $output | cut -d':' -f2 | xargs)
-		echo "Router IP: ${router_ip}"
-	}
-
-	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-	# Function name:
-	# 	get_wifi_details
+	# 	get_wifi_info
 	#
 	# Description:
 	# 	This function shows detailed information about the Wi-Fi connection, including IP address, subnet mask, and router IP.
@@ -150,7 +161,7 @@ function wifi() {
 	# Notes:
 	#   - It uses the 'networksetup' command to retrieve the information.
 	#
-	local function get_wifi_details() {
+	local function get_wifi_info() {
 		networksetup -getinfo Wi-Fi
 	}
 
@@ -217,28 +228,64 @@ function wifi() {
 		sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z
 	}
 
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name:
+	# 	check_connection
+	#
+	# Description:
+	# 	This function checks the Internet connection.
+	#
+	# Notes:
+	#   - It uses the 'ping' command that tries to send the package to 'google.com' and then get it back.
+	#
+	local function check_connection() {
+		ping -c 5 www.google.com
+	}
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name:
+	# 	save_network
+	#
+	# Description:
+	# 	This function saves a new Wi-Fi network in the favorite list.
+	#
+	# Notes:
+	#   - It uses the '.wifi_networks.config' configuration that will store your favorite list.
+	#
+	function save_network() {}
+
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+	# Function name:
+	# 	delete_network
+	#
+	# Description:
+	# 	This function deletes a specific Wi-Fi network from the favorite list.
+	#
+	# Notes:
+	#   - It uses the '.wifi_networks.config' configuration that stores your favorite Wi-Fi network.
+	#
+	function delete_network() {}
+
 	# MAIN PART OF THE SCRIPT:
 
 	case $1 in
-		"get")
-			if [ $# -eq 2 ]; then
-				case $2 in
-					"name")
-						get_current_wifi_name
-						;;
-						;;
-					"list")
-						get_wifi_list
-						;;
-					"info")
-						get_wifi_details
-						;;
-					*)
-						print_bad_wifi_syntax
-						;;
-				esac
-			elif [[ $# -eq 3 && $2 = "router" && $3 = "ip" ]]; then
-				get_wifi_router_ip
+		"name")
+			if [[ $# -eq 1 ]]; then
+				get_current_wifi_name
+			else
+				print_bad_wifi_syntax
+			fi
+			;;
+		"scan")
+			if [[ $# -eq 1 ]]; then
+				get_wifi_list
+			else
+				print_bad_wifi_syntax
+			fi
+			;;
+		"info")
+			if [[ $# -eq 1 ]]; then
+				get_wifi_info
 			else
 				print_bad_wifi_syntax
 			fi
@@ -257,7 +304,10 @@ function wifi() {
 			turn_wifi_off
 			;;
 		"connect")
-			if [[ $# -ge 2 && -n "$2" ]]; then
+			if [[ $# -eq 2 ]]; then
+				local network=$2
+				connect_wifi $network
+			elif [[ $# -eq 3 ]]; then
 				local network=$2; local password=$3
 				connect_wifi $network $password
 			else
@@ -266,6 +316,23 @@ function wifi() {
 			;;
 		"disconnect")
 			disconnect_network
+			;;
+		"ping")
+			check_connection
+			;;
+		"save")
+			if [[ $# -eq 3 ]]; then
+				save_network
+			else
+				print_bad_wifi_syntax
+			fi
+			;;
+		"delete")
+			if [[ $# -eq 3 ]]; then
+				delete_network
+			else
+				print_bad_wifi_syntax
+			fi
 			;;
 		"help")
 			print_wifi_help
