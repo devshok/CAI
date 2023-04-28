@@ -115,14 +115,225 @@ function wifi() {
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-	# Function name:
-	# 	print_bad_wifi_syntax
+	# Function names:
+	#	- print_bad_syntax_title_with_message
+	# 	- print_note_for_help
+	# 	- print_bad_wifi_name_syntax
+	# 	- print_bad_wifi_scan_syntax
+	# 	- print_bad_wifi_info_syntax
+	# 	- print_bad_wifi_status_syntax
+	# 	- print_bad_wifi_turn_on_syntax
+	# 	- print_bad_wifi_turn_off_syntax
+	#	- print_bad_wifi_connect_syntax
+	#	- print_bad_wifi_disconnect_syntax
+	#	- print_bad_wifi_ping_syntax
+	#	- print_bad_wifi_save_syntax
+	#	- print_bad_wifi_delete_syntax
+	#	- print_bad_wifi_list_syntax
+	#	- print_bad_wifi_help_syntax
 	#
 	# Description:
-	# 	Prints an error message for incorrect wifi syntax.
+	# 	These functions print an error message when there is a bad syntax in the wifi command. 
+	# 	It is meant to be used as a helper function for the wifi command functions.
 	#
-	local function print_bad_wifi_syntax() {
-		echo "bad wifi syntax. use 'wifi help' to get instructions."
+
+	local function print_bad_syntax_title_with_message() {
+		local message=$1
+		print_error_title
+		echo "Wrong way of using:"
+		print_empty_line
+		echo "${message}"
+		print_empty_line
+	}
+
+	local function print_note_for_help() {
+		printf "Notes:\n"
+		print_empty_line
+		printf "\t1. This command can also be abbreviated as \033[1mwf\033[0m instead of \033[1mwifi\033[0m.\n"
+		printf "\t2. Use \033[1mwifi help\033[0m to get more instructions.\n"
+		if [[ $# -gt 0 ]]; then
+			local i=3
+			for note in "$@"; do
+				printf "\t${i}. ${note}\n"
+				((i++))
+			done
+		fi
+		print_empty_line
+	}
+
+	local function print_bad_wifi_name_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi name$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mwifi name\033[0m is only used without options."
+		print_empty_line
+	}
+
+	local function print_bad_wifi_scan_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi scan$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mwifi scan\033[0m is only used without options."
+		print_empty_line
+	}
+
+	local function print_bad_wifi_info_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi info$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mwifi info\033[0m is only used without options."
+		print_empty_line
+	}
+
+	local function print_bad_wifi_status_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi status$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mwifi status\033[0m is only used without options."
+		print_empty_line
+	}
+
+	local function print_bad_wifi_turn_on_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi on$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mwifi on\033[0m is only used without options."
+		print_empty_line
+	}
+
+	local function print_bad_wifi_turn_off_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi off$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mwifi off\033[0m is only used without options."
+		print_empty_line
+	}
+
+	local function print_bad_wifi_connect_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi connect$(tput sgr0)"
+		echo "Usage:"
+		print_empty_line
+		printf "\t$(tput setaf 3)wifi connect [<Wi-Fi network>|<Alias name>] <Password>$(tput sgr0)\n\n"
+		print_empty_line
+		echo "Arguments:"
+		print_empty_line
+		printf "\t\033[1m<Wi-Fi network>\033[0m\tA name of Wi-Fi network that you want to connect.\n"
+		printf "\t\033[1m<Alias name>\033[0m\tA shortcut name of Wi-Fi network that you saved in the favorite list. In this case, no need a password.\n"
+		printf "\t\033[1m<Password>\033[0m\tA password of Wi-Fi network that you want to connect. No need a password if you're using an alias from the favorite list.\n"
+		print_empty_line
+		print_note_for_help "Use \033[1mwifi list fave\033[0m to retrieve the list of aliases that you saved to use \033[1mwifi connect\033[0m command."
+		echo "Examples:"
+		print_empty_line
+		printf "\t\033[1mwifi connect home\033[0m\n"
+		printf "\t\033[1mwifi connect work\033[0m\n"
+		printf "\t\033[1mwifi connect NWF-4532 Qwerty123456\033[0m\n"
+		print_empty_line
+	}
+
+	local funciton print_bad_wifi_disconnect_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi disconnect$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mwifi disconnect\033[0m is only used without options."
+		print_empty_line
+	}
+
+	local function print_bad_wifi_ping_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi ping$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mwifi ping\033[0m is only used without options."
+		print_empty_line
+	}
+
+	local function print_bad_wifi_save_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi save$(tput sgr0)"
+		echo "Usage:"
+		print_empty_line
+		printf "\t$(tput setaf 3)wifi save <Alias name> <Wi-Fi network> <Password>$(tput sgr0)\n\n"
+		print_empty_line
+		echo "Arguments:"
+		print_empty_line
+		printf "\t\033[1m<Alias name>\033[0m\tA shortcut name of Wi-Fi network that you wanna save in the favorite list.\n"
+		printf "\t\033[1m<Wi-Fi network>\033[0m\tA name of Wi-Fi network that you wana save in the favorite list.\n"
+		printf "\t\033[1m<Password>\033[0m\tA password of Wi-Fi network that you wanna save in the favorite list.\n"
+		print_empty_line
+		print_note_for_help "Use \033[1mwifi list fave\033[0m to retrieve the list of aliases that you saved."
+		print_empty_line
+		echo "Examples:"
+		print_empty_line
+		printf "\t\033[1mwifi save home NWF-4532 Qwerty123456\033[0m\n"
+		printf "\t\033[1mwifi connect home\033[0m\n"
+		print_empty_line
+	}
+
+	local function print_bad_wifi_delete_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi delete$(tput sgr0)"
+		echo "Usage:"
+		print_empty_line
+		printf "\t$(tput setaf 3)wifi delete <Alias name>$(tput sgr0)\n\n"
+		print_empty_line
+		echo "Arguments:"
+		print_empty_line
+		printf "\t\033[1m<Alias name>\033[0m\tA shortcut name of Wi-Fi network that you wanna delete from the favorite list.\n"
+		print_empty_line
+		print_note_for_help "Use \033[1mwifi list fave\033[0m to retrieve the list of aliases that you saved."
+		print_empty_line
+		echo "Examples:"
+		print_empty_line
+		printf "\t\033[1mwifi save home NWF-4532 Qwerty123456\033[0m\n"
+		printf "\t\033[1mwifi connect home\033[0m\n"
+		printf "\t\033[1mwifi disconnect home\033[0m\n"
+		printf "\t\033[1mwifi delete home\033[0m\n"
+		print_empty_line
+	}
+
+	local function print_bad_wifi_list_syntax() {
+		print_bad_syntax_title_with_message "\t$(tput setaf 3)wifi list$(tput sgr0)"
+		echo "Usage:"
+		print_empty_line
+		printf "\t$(tput setaf 3)wifi list [option]$(tput sgr0)\n\n"
+		print_empty_line
+		echo "Options:"
+		print_empty_line
+		printf "\t\033[1mfave\033[0m\tA list of favorite Wi-Fi networks that you saved.\n"
+		print_empty_line
+		print_note_for_help
+		echo "Example:"
+		print_empty_line
+		printf "\t\033[1mwifi list fave\033[0m\n"
+		print_empty_line
+	}
+
+	local function print_wifi_help() {
+		printf "\n\033[1mwifi\033[0m - A command-line tool for managing Wi-Fi interface on macOS.\n\n"
+		printf "Usage:\n"
+		print_empty_line
+		printf "\t$(tput setaf 3)wifi <command> [options]$(tput sgr0)\n\n"
+		printf "Commands:\n"
+		print_empty_line
+		printf "\t\033[1mname\033[0m\t\t\t\t\t\t\tGet a name of your current Wi-Fi network\n"
+		printf "\t\033[1mscan\033[0m\t\t\t\t\t\t\tScan Wi-Fi networks around your machine\n"
+		printf "\t\033[1minfo\033[0m\t\t\t\t\t\t\tGet the details of your current Wi-Fi connection\n"
+		printf "\t\033[1mstatus\033[0m\t\t\t\t\t\t\tShow the status of Wi-Fi interface.\n"
+		printf "\t\033[1mon\033[0m\t\t\t\t\t\t\tTurn on the Wi-Fi interface\n"
+		printf "\t\033[1moff\033[0m\t\t\t\t\t\t\tTurn off the Wi-Fi interface\n"
+		printf "\t\033[1mconnect\033[0m [<Wi-Fi network>|<Alias Name>] <password>\tConnect a Wi-Fi network either by a name and password or by a name in the favorite list\n"
+		printf "\t\033[1mdisconnect\033[0m\t\t\t\t\t\tDisconnect your machine from your current Wi-Fi connection\n"
+		printf "\t\033[1mping\033[0m\t\t\t\t\t\t\tCheck the Internet connection\n"
+		printf "\t\033[1msave\033[0m <Alias name> <Wi-Fi network> <Password>\t\tSave to the favorite list with a alias name\n"
+		printf "\t\033[1mdelete\033[0m <Alias name>\t\t\t\t\tDelete a favorite Wi-FI network info from the favorite list using an alias name\n"
+		printf "\t\033[1mlist\033[0m [fave]\t\t\t\t\t\tList all favorite Wi-Fi networks you saved before\n"
+		printf "\t\033[1mhelp\033[0m\t\t\t\t\t\t\tPrint this page to show you instructions for using 'wifi' command\n\n"
+		printf "Note:\n"
+		print_empty_line
+		printf "\tThis command can also be abbreviated as \033[1mwf\033[0m instead of \033[1mwifi\033[0m.\n"
+		print_empty_line
+		printf "Examples:\n"
+		print_empty_line
+		printf "\t\033[1mwifi status\033[0m\t\t\t\t\t\tGet the state of your Wi-Fi interface\n"
+		printf "\t\033[1mwifi on\033[0m\t\t\t\t\t\t\tTurn the Wi-Fi interface on if it's turned off\n"
+		printf "\t\033[1mwifi connect YOUR-NEW-WIFI yourPassword12345\033[0m\t\tConnect to a new Wi-Fi network using Wi-Fi's name and password\n"
+		printf "\t\033[1mwifi save HOME YOUR-NEW-WIFI yourPassword12345\033[0m\t\tSave your home Wi-Fi network onto the favorite list using a short handful name\n"
+		printf "\t\033[1mwifi connect HOME\033[0m\t\t\t\t\tAfter saving your home Wi-Fi network, you're able to connect just simply by using a short handful name like 'HOME' for example\n"
+		printf "\t\033[1mwifi ping\033[0m\t\t\t\t\t\tCheck the Internet connection\n"
+		printf "\t\033[1mwifi list fave\033[0m\t\t\t\t\t\tList all your favorite Wi-Fi networks\n"
+		printf "\t\033[1mwifi disconnect\033[0m\t\t\t\t\t\tDisconnect your machine from your current Wi-Fi network\n"
+		printf "\t\033[1mwifi delete HOME\033[0m\t\t\t\t\tAnd then you can delete a home Wi-Fi network from your favorite list to forget it\n"
+		print_empty_line
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -136,7 +347,9 @@ function wifi() {
 	# 	- $1: The unknown wifi status to be printed.
 	#
 	local function print_unknown_wifi_status() {
+		print_empty_line
 		echo "error: unknown wifi status: ${1}"
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -147,7 +360,9 @@ function wifi() {
 	# 	Prints a message indicating that Wi-Fi is ON.
 	#
 	local function print_wifi_status_on() {
+		print_empty_line
 		echo "Wi-Fi is ON"
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -158,18 +373,9 @@ function wifi() {
 	# 	Prints a message indicating that Wi-Fi is OFF.
 	#
 	local function print_wifi_status_off() {
+		print_empty_line
 		echo "Wi-Fi is OFF"
-	}
-
-	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-	# Function name:
-	# 	print_wifi_help
-	#
-	# Description:
-	# 	Prints instructions for using the 'wifi' command.
-	#
-	local function print_wifi_help() {
-		echo "here are some instructions for 'wifi help'"
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -182,7 +388,9 @@ function wifi() {
 	local function get_current_wifi_name() {
 		local output=$(networksetup -getairportnetwork en0)
 		local name=$(echo $output | cut -d':' -f2 | xargs)
+		print_empty_line
 		echo $name
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -219,7 +427,9 @@ function wifi() {
 	#   - It uses the 'airport' utility to scan for Wi-Fi networks and formats the output using awk and column.
 	#
 	local function get_wifi_list() {
+		print_empty_line
 		/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -s
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -233,7 +443,15 @@ function wifi() {
 	#   - It uses the 'networksetup' command to retrieve the information.
 	#
 	local function get_wifi_info() {
-		networksetup -getinfo Wi-Fi
+		print_empty_line
+		local wifi_raw_status=$(networksetup -getairportpower en0)
+		local wifi_status=$(echo $wifi_raw_status | cut -d':' -f2 | xargs)
+		if [[ "$wifi_status" == "Off" ]]; then
+			echo "You're offline. The Wi-Fi interface is turned off."
+		else
+			networksetup -getinfo Wi-Fi
+		fi
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -279,8 +497,25 @@ function wifi() {
 	#   - It uses the 'networksetup' command to set the Wi-Fi network and password.
 	#
 	local function connect_wifi() {
-		local network=$1; local password=$2
-		networksetup -setairportnetwork en0 $network $password
+		source "$CONFIG_FILE_PATH"
+		local found_fave_wifi; local found_password
+		for alias_name wifi_info in ${(kv)WIFI_NETWORKS}; do
+			IFS="," read -r current_wifi_name current_wifi_password <<< "$wifi_info"
+			current_wifi_password=$(echo $current_wifi_password | tr -d ' ')
+			if [[ "$1" == "$alias_name" ]]; then
+				found_fave_wifi=$current_wifi_name
+				found_password=$current_wifi_password
+				break
+			fi
+		done
+		print_empty_line
+		if [[ -n "$found_fave_wifi" && -n "$found_password" ]]; then
+			networksetup -setairportnetwork en0 $found_fave_wifi $found_password
+		else
+			local network=$1; local password=$2
+			networksetup -setairportnetwork en0 $network $password
+		fi
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -296,7 +531,9 @@ function wifi() {
 	#   - It does not turn off Wi-Fi; it only disconnects from the current network.
 	#
 	local function disconnect_network() {
+		print_empty_line
 		sudo /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -z
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -310,7 +547,9 @@ function wifi() {
 	#   - It uses the 'ping' command that tries to send the package to 'google.com' and then get it back.
 	#
 	local function check_connection() {
+		print_empty_line
 		ping -c 5 www.google.com
+		print_empty_line
 	}
 
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -455,35 +694,43 @@ function wifi() {
 			if [[ $# -eq 1 ]]; then
 				get_current_wifi_name
 			else
-				print_bad_wifi_syntax
+				print_bad_wifi_name_syntax
 			fi
 			;;
 		"scan")
 			if [[ $# -eq 1 ]]; then
 				get_wifi_list
 			else
-				print_bad_wifi_syntax
+				print_bad_wifi_scan_syntax
 			fi
 			;;
 		"info")
 			if [[ $# -eq 1 ]]; then
 				get_wifi_info
 			else
-				print_bad_wifi_syntax
+				print_bad_wifi_info_syntax
 			fi
 			;;
 		"status")
 			if [[ $# -eq 1 ]]; then
 				get_wifi_status
 			else
-				print_bad_wifi_syntax
+				print_bad_wifi_status_syntax
 			fi
 			;;
 		"on")
-			turn_wifi_on
+			if [[ $# -eq 1 ]]; then
+				turn_wifi_on
+			else
+				print_bad_wifi_turn_on_syntax
+			fi
 			;;
 		"off")
-			turn_wifi_off
+			if [[ $# -eq 1 ]]; then
+				turn_wifi_off
+			else
+				print_bad_wifi_turn_off_syntax
+			fi
 			;;
 		"connect")
 			if [[ $# -eq 2 ]]; then
@@ -493,14 +740,22 @@ function wifi() {
 				local network=$2; local password=$3
 				connect_wifi $network $password
 			else
-				print_bad_wifi_syntax
+				print_bad_wifi_connect_syntax
 			fi
 			;;
 		"disconnect")
-			disconnect_network
+			if [[ $# -eq 1 ]]; then
+				disconnect_network
+			else
+				print_bad_wifi_disconnect_syntax
+			fi
 			;;
 		"ping")
-			check_connection
+			if [[ $# -eq 1 ]]; then
+				check_connection
+			else
+				print_bad_wifi_ping_syntax
+			fi
 			;;
 		"save")
 			if [[ $# -eq 4 ]]; then
@@ -509,28 +764,35 @@ function wifi() {
 				local network_password=$4
 				save_network $alias_name $network_name $network_password
 			else
-				print_bad_wifi_syntax
+				print_bad_wifi_save_syntax
 			fi
 			;;
 		"delete")
 			if [[ $# -eq 2 ]]; then
 				delete_network $2
 			else
-				print_bad_wifi_syntax
+				print_bad_wifi_delete_syntax
 			fi
 			;;
 		"list")
 			if [[ $# -eq 2 && "$2" == "fave" ]]; then
 				print_fave_list
 			else
-				print_bad_wifi_syntax
+				print_bad_wifi_list_syntax
 			fi
 			;;
 		"help")
-			print_wifi_help
+			if [[ $# -eq 1 ]]; then
+				print_wifi_help
+			else
+				print_bad_wifi_help_syntax
+			fi
 			;;
 		*)
-			print_bad_wifi_syntax
+			print_error_title
+			echo "Bad syntax. Check instructions below to use \033[1mwifi\033[0m correctly."
+			print_empty_line
+			print_wifi_help
 			;;
 	esac
 }
