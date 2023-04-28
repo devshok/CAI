@@ -141,10 +141,14 @@ function bluetooth() {
 	local function print_bad_syntax_bl_on_error() {
 		print_bad_syntax_title_with_message "\t$(tput setaf 3)bluetooth on$(tput sgr0)"
 		print_empty_line
+		print_note_for_help "\033[1mbluetooth on\033[0m is only used without options."
+		print_empty_line
 	}
 
 	local function print_bad_syntax_bl_off_error() {
 		print_bad_syntax_title_with_message "\t$(tput setaf 3)bluetooth off$(tput sgr0)"
+		print_empty_line
+		print_note_for_help "\033[1mbluetooth off\033[0m is only used without options."
 		print_empty_line
 	}
 
@@ -577,6 +581,9 @@ function bluetooth() {
 	# Description:
 	# 	This function retrieves the updated list of favorite devices stored in the configuration file.
 	# 	It then prints the updated list along with the device name and MAC address.
+	#
+	# Notes:
+	#   - The configuration of the favorite list is intended to be stored at '~/.cai/' path.
 	#
 	local function get_updated_fave_list() {
 		source "$CONFIG_FILE_PATH"
