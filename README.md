@@ -48,64 +48,64 @@ They are intended being divided by different kinds of aliases and functions **se
 ### wifi
 Let's say, you want to turn on Wi-Fi:
 	```
-    wifi on
-    ```
+	wifi on
+	```
     
 And then you want to get a list of Wi-Fi networks around your machine:
-	```
-    wifi scan
-    ```
+```
+wifi scan
+```
     
 You found that one and thought you want to connect it:
-	```
-    wifi connect YOUR-HOME-WIFI Password123456Aa
-    ```
+```
+wifi connect YOUR-HOME-WIFI Password123456Aa
+```
     
 Don't want to connect typing all the name and password every time? No problem!
-	```
-    wifi save home YOUR-HOME-WIFI Password123456Aa
-    ```
+```
+wifi save home YOUR-HOME-WIFI Password123456Aa
+```
     
 And use your new alias like that:
-	```
-    wifi connect home
-    ```
+```
+wifi connect home
+```
     
 CAI provides much more Wi-Fi-related commands. To see a list of these commands, type:
-	```
-    wifi help
-    ```
+```
+wifi help
+```
     
 ### bluetooth
 Like Wi-FI, we can turn it on (or off):
-	```
-    bluetooth on
-    ```
+```
+bluetooth on
+```
     
 And get the list of paired devices with your machine:
-	```
-    bluetooth list all
-    ```
+```
+bluetooth list all
+```
     
 Found that one you want to connect? Connect by MAC-address:
-	```
-    bluetooth connect 5b-a6-a6-c5-f5-31
-    ```
+```
+bluetooth connect 5b-a6-a6-c5-f5-31
+```
     
 And save it by creating a handful alias you like:
-	```
-    bluetooth save airpods 5b-a6-a6-c5-f5-31
-    ```
+```
+bluetooth save airpods 5b-a6-a6-c5-f5-31
+```
     
 Then, you'll be able to manipulate with your device like that:
-	```
-    bluetooth disconnect airpods
-    ```
+```
+bluetooth disconnect airpods
+```
     
 Or vice-versa:
-	```
-    bluetooth connect airpods
-    ```
+```
+bluetooth connect airpods
+```
     
 Get more commands:
 	```
