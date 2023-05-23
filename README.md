@@ -1,6 +1,6 @@
 # CAI (Centralized Alias Interface)
 
-**CAI (Centralized Alias Interface)** is a shell script written in Zsh and intended for managing macOS utilities such as Wi-Fi, Bluetooth, git, files on macOS.
+**CAI (Centralized Alias Interface)** is a CLI solution, written in zsh, that intended to help users on Unix machines to unload responsibility from .zshrc file and accelerate the initial compiling on starting up the zsh session.
 
 *CAI* is divided into a few **Alias Groups (AG)** like below:
 
@@ -17,6 +17,8 @@
     AG that stores your aliases to make your work easier with Git.
 
 They are intended being divided by different kinds of aliases and functions **semantically** and for a small optimization instead of sourcing all the code every time when it's not really needed...
+
+⚠️ All the documentation of implementation below is only valid for macOS users.
 
 ## Dependencies
 
