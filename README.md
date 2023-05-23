@@ -37,7 +37,7 @@ As I said, AGs help to unload the `.zshrc` file. You can add a new AG but check 
     mv cai/.cai ~/
     ```
 
-4. Open your `.zshrc` file at the root and write the next lines:
+4. Open your `.zshrc` file at the root and write the next lines and then save the new changes:
 	```
     source ~/.cai/.cai.zsh
     cai run
