@@ -16,7 +16,7 @@
 4. __git__
     AG that stores your aliases to make your work easier with Git.
 
-They are intended being divided by different kinds of aliases and functions **semantically** and for a small optimization instead of sourcing all the code every time when it's not really needed...
+They are intended being divided by different kinds of aliases and functions **semantically** and also for a small optimization instead of sourcing all the code of customization preferences every time in `.zshrc` file when it's not really needed...
 
 ⚠️ All the documentation of implementation below is only valid for macOS users.
 
